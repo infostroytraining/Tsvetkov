@@ -1,0 +1,41 @@
+package com.tsvetkov;
+
+import java.util.Iterator;
+
+/**
+ * Проверка орфографии
+ * 
+ * Некоторые люди не обращают внимание на орфографию. Например, не пишут новое
+ * предложение с заглавной буквы. Или не ставят пробел после знаков препинания.
+ * 
+ * Ваша задача: исправить их ошибки.
+ * 
+ * Что нужно сделать:
+ * 
+ * 1. Каждое новое предложение должно начинаться с заглавной буквы. 2. После
+ * знаков препинания (точка и запятая) должны быть пробелы.
+ */
+public class TextUtils {
+
+	public String correctText(String text) {
+		String[] s = text.split("\\.");
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < s.length; i++) {
+			sb.append(Character.toUpperCase(s[i].charAt(0)));
+			for (int j = 1; j < s[i].length(); j++) {
+				sb = sb.append(s[i].charAt(j));
+				System.out.println(s[i].charAt(j));
+				if (s[i].charAt(j) == ',' || s[i].charAt(j) == '.') {
+					if (s[i].charAt(j + 1) != ' ') {
+						sb.append(" ");
+					}
+				}
+			}
+			sb.append(". ");
+
+		}
+		sb.deleteCharAt(sb.length()-1);
+		return sb.toString();
+
+	}
+}
