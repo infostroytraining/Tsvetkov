@@ -27,10 +27,10 @@ public class FileUtils {
 
 	}
 
-	public TreeMap readWordFromFile(String path) throws FileNotFoundException {
+	public TreeMap readWordFromFile() throws FileNotFoundException {
 		TreeMap<String, Integer> map = new TreeMap<String, Integer>();
 		String[] result;
-		path = "src/main/resources/file/read.txt";
+		String path = "src/main/resources/file/read.txt";
 		File file = new File(path);
 		StringBuilder sb = new StringBuilder();
 		try (BufferedReader br = new BufferedReader(new FileReader(file))) {

@@ -12,9 +12,9 @@ public class Main {
 
 	public static void main(String[] args) throws FileNotFoundException {
 		FileUtils f = new FileUtils();
-		System.out.println(f.readWordFromFile("привет привет привет"));
-		TreeMap map = f.readWordFromFile("pr");
-		System.out.println(Arrays.toString(f.getFrequency(f.readWordFromFile("1"))));
+		System.out.println(f.readWordFromFile());
+		TreeMap map = f.readWordFromFile();
+		System.out.println(Arrays.toString(f.getFrequency(f.readWordFromFile())));
 		f.getWordsByLength(map);
 		System.out.println(f.getWordsDuplicates(map));
 	}
