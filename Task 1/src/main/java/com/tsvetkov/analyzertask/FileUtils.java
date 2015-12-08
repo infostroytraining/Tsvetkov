@@ -22,15 +22,15 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class FileUtils {
+	public String path;
 
-	public FileUtils() {
-
+	public FileUtils(String path) {
+		this.path = path;
 	}
 
 	public TreeMap readWordFromFile() throws FileNotFoundException {
 		TreeMap<String, Integer> map = new TreeMap<String, Integer>();
 		String[] result;
-		String path = "src/main/resources/file/read.txt";
 		File file = new File(path);
 		StringBuilder sb = new StringBuilder();
 		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
