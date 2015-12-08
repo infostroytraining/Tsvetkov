@@ -19,10 +19,6 @@ import java.util.regex.Pattern;
  * знаков препинания (точка и запятая) должны быть пробелы.
  */
 public class TextUtils {
-	public static void main(String[] arg) {
-		TextUtils t = new TextUtils();
-		System.out.println(t.correctText("l"));
-	}
 
 	public String correctText(String text) {
 		/*
