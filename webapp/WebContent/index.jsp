@@ -35,13 +35,13 @@ ${ErrorMsg}
 			<div class="line">
 				<div class="left">Password</div>
 				<div class="right">
-					<input type="text">
+					<input type="password">
 				</div>
 			</div>
 			<div class="line">
 				<div class="left">Confirm password</div>
 				<div class="right">
-					<input type="text">
+					<input type="password">
 				</div>
 			</div>
 			<div class="line">
