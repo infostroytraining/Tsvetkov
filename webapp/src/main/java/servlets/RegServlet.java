@@ -31,7 +31,9 @@ public class RegServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		HttpSession session = request.getSession();
+		int random = (int) (Math.random()*1000);
+		session.setAttribute("randomNum", random);
 		request.getRequestDispatcher("/index.jsp").forward(request, response);
 
 	}
