@@ -8,6 +8,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import main.java.DAO.impl.UserDAO;
+import main.java.validator.Validation;
 
 /**
  * Application Lifecycle Listener implementation class Listener
@@ -16,7 +17,7 @@ import main.java.DAO.impl.UserDAO;
 public class Listener implements ServletContextListener {
 
     private static final String USER_DAO = "USER_DAO";
-    private static final String USER_NAME_PATTERN="^[a-zA-Z]{3,15}$";
+   
 	/**
      * Default constructor. 
      */
@@ -38,8 +39,8 @@ public class Listener implements ServletContextListener {
          UserDAO userDAO = new UserDAO();
          ServletContext sc = arg0.getServletContext();
          sc.setAttribute(USER_DAO, userDAO);
-         Pattern pattern = Pattern.compile(USER_NAME_PATTERN);
-         sc.setAttribute("NameValid", pattern);
+         Validation validation = new Validation();
+         sc.setAttribute("validation", validation);
     }
 	
 }
