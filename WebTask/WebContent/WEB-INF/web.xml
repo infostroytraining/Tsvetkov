@@ -11,15 +11,33 @@
 		<welcome-file>RegServlet</welcome-file>
 	</welcome-file-list>
 	<servlet>
-		<description></description>
 		<display-name>RegServlet</display-name>
 		<servlet-name>RegServlet</servlet-name>
 		<servlet-class>main.java.servlets.RegServlet</servlet-class>
 	</servlet>
+
 	<servlet-mapping>
+
 		<servlet-name>RegServlet</servlet-name>
 		<url-pattern>/RegServlet</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>RegServlet</servlet-name>
+		<servlet-class>main.java.servlets.RegServlet</servlet-class>
+		<multipart-config>
+			<max-file-size>10485760</max-file-size>
+			<max-request-size>20971520</max-request-size>
+			<file-size-threshold>5242880</file-size-threshold>
+		</multipart-config>
+		<servlet>
+			<servlet-name>jcaptcha</servlet-name>
+			<servlet-class>com.octo.captcha.module.servlet.image.SimpleImageCaptchaServlet</servlet-class>
+		</servlet>
+		<servlet-mapping>
+		<servlet-name>jcaptcha</servlet-name>
+		<url-pattern>/jcaptcha.jpg</url-pattern>
+		</servlet-mapping>
+	</servlet>
 	<listener>
 		<listener-class>main.java.listener.Listener</listener-class>
 	</listener>
