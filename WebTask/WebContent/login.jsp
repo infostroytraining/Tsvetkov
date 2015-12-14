@@ -14,20 +14,8 @@
 	<br>
 	</c:forEach>
 </c:if>
-<form method="post" action="RegServlet">
+<form method="post" action="LoginServlet" >
 	<div class="table">
-		<div class="line">
-			<div class="left">First name</div>
-			<div class="right">
-				<input type="text" name="fname">
-			</div>
-		</div>
-		<div class="line">
-			<div class="left">Last name</div>
-			<div class="right">
-				<input type="text" name="lname">
-			</div>
-		</div>
 		<div class="line">
 			<div class="left">Login</div>
 			<div class="right">
@@ -41,21 +29,8 @@
 			</div>
 		</div>
 		<div class="line">
-			<div class="left">Confirm password</div>
-			<div class="right">
-				<input type="password" name="cpass">
-			</div>
-		</div>
-		<div class="line">
-			<div class="left">Email</div>
-			<div class="right">
-				<input type="text" name="email">
-			</div>
-		</div>
-	
-		<div class="line">
 			<div class="left">
-				<input type="submit" value="Register">
+				<input type="submit" value="Login">
 			</div>
 			<div class="right">
 				<input type="reset" value="Reset">

@@ -52,5 +52,11 @@
 			<artifactId>jcaptcha-all</artifactId>
 			<version>1.0-RC-2.0.1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-servlet-api</artifactId>
+			<version>7.0.54</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 </project>

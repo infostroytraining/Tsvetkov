@@ -17,7 +17,7 @@ public class UserDAO implements DAO<User> {
 	private static final String INSERT_USER = "INSERT INTO users.users (firstname, lastname, email, login, password) values(?,?,?,?,?);";
 	private static final String SELECT_USER = "SELECT firstname, lastname, email, login, password, image FROM users.users WHERE id=?;";
 	private static final String UPDATE_USER = "UPDATE users.users SET firstname=?,lastname=?,email=?,login=?,password=?,image=?WHERE id=?;";
-	private static final String GET_USER_BY_USERNAME = "SELECT id from users.users WHERE login=?;";
+	private static final String GET_USER_BY_USERNAME = "SELECT id FROM users.users WHERE login=?;";
 	private static final Logger log = LogManager.getLogger();
 
 	public UserDAO() {
