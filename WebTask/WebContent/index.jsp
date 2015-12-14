@@ -14,7 +14,7 @@
 	<br>
 	</c:forEach>
 </c:if>
-<form method="post" action="RegServlet">
+<form method="post" action="RegServlet" enctype="multipart/form-data">
 	<div class="table">
 		<div class="line">
 			<div class="left">First name</div>
@@ -55,7 +55,7 @@
 		<div class="line">
 			<div class="left">Add photo</div>
 			<div class="right">
-				<input type="file" name="photo">
+				<input type="file" name="photo" id="photo">
 			</div>
 		</div>
 		<div class="line">
@@ -64,6 +64,12 @@
 			</div>
 			<div class="right">
 				<input type="reset" value="Reset">
+			</div>
+		</div>
+		<div class="line">
+			<div class="left">
+				<img src="jcaptcha.jpg" /><input type="text" name="jcaptcha"
+					value="" />
 			</div>
 		</div>
 	</div>

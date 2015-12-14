@@ -8,6 +8,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import main.java.DAO.impl.UserDAO;
+import main.java.service.UserService;
 import main.java.validator.Validation;
 
 /**
@@ -41,6 +42,8 @@ public class Listener implements ServletContextListener {
          sc.setAttribute(USER_DAO, userDAO);
          Validation validation = new Validation();
          sc.setAttribute("validation", validation);
+         UserService userService = new UserService(userDAO);
+         sc.setAttribute("userService", userService);
     }
 	
 }

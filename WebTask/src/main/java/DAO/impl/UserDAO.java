@@ -17,6 +17,7 @@ public class UserDAO implements DAO<User> {
 	private static final String INSERT_USER = "INSERT INTO users.users (firstname, lastname, email, login, password) values(?,?,?,?,?);";
 	private static final String SELECT_USER = "SELECT firstname, lastname, email, login, password, image FROM users.users WHERE id=?;";
 	private static final String UPDATE_USER = "UPDATE users.users SET firstname=?,lastname=?,email=?,login=?,password=?,image=?WHERE id=?;";
+	private static final String GET_USER_BY_USERNAME = "SELECT id from users.users WHERE login=?;";
 	private static final Logger log = LogManager.getLogger();
 
 	public UserDAO() {
@@ -94,7 +95,7 @@ public class UserDAO implements DAO<User> {
 			log.error("SQLException during update USER");
 			e.printStackTrace();
 		}
-		log.exit(entity.toString());
+		log.info(entity.toString());
 		return entity;
 	}
 
@@ -110,4 +111,24 @@ public class UserDAO implements DAO<User> {
 		return null;
 	}
 
+	public int getUserIdByUsername(String username) {
+		int result = 0;
+		User user = new User();
+		log.entry(username);
+		PreparedStatement statement = null;
+		try {
+			statement = BDConnection.getConnection().prepareStatement(GET_USER_BY_USERNAME);
+			statement.setString(1, username);
+			ResultSet rs = statement.executeQuery();
+			if (rs.next()) {
+				result = rs.getInt("id");
+			}
+			log.exit(user.toString());
+		} catch (SQLException e) {
+			log.error("SQLException during read USER by ID");
+			e.printStackTrace();
+		}
+		return result;
+
+	}
 }

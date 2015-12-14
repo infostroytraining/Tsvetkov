@@ -73,6 +73,7 @@ public class RegServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 		User user = new User();
 		user.setFirstName(request.getParameter("fname"));
 		user.setLastName(request.getParameter("lname"));
@@ -83,13 +84,16 @@ public class RegServlet extends HttpServlet {
 		}
 		Validation validation = (Validation) request.getServletContext().getAttribute("validation");
 		List<String> errorList = validation.checkUser(user);
-		if (errorList.isEmpty() == false){
+		UserDAO userDAO = (UserDAO) request.getServletContext().getAttribute("USER_DAO");
+		if (userDAO.getUserIdByUsername(request.getParameter("login")) != 0) {
+			errorList.add("username already exist");
+		}
+		if (errorList.isEmpty() == false) {
 			request.setAttribute("ErrorMsg", errorList);
+			errorList = null;
 			request.getRequestDispatcher("/index.jsp").forward(request, response);
-		} else
-
-		{
-			UserService userService = new UserService((UserDAO) request.getServletContext().getAttribute("USER_DAO"));
+		} else {
+			UserService userService = (UserService) request.getServletContext().getAttribute("userService");
 			user = userService.add(user);
 			request.getSession().setAttribute("id", user.getId());
 			request.getRequestDispatcher("/welcome.jsp").forward(request, response);
