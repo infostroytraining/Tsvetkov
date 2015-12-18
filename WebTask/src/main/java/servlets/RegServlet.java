@@ -3,6 +3,7 @@ package main.java.servlets;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -57,39 +58,54 @@ public class RegServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		User user = new User();
-		user.setFirstName(request.getParameter("fname"));
-		user.setLastName(request.getParameter("lname"));
-		user.setEmail(request.getParameter("email"));
-		user.setLogin(request.getParameter("login"));
-		if (request.getParameter("pass").equals(request.getParameter("cpass"))) {
-			user.setPassword(request.getParameter("pass"));
-		}
 		Validation validation = (Validation) request.getServletContext().getAttribute("validation");
-		List<String> errorList = validation.checkUser(user);
-		UserService userService = (UserService) request.getServletContext().getAttribute("userService");
-
-		try {
-			if (userService.getUserIdByUsername(request.getParameter("login")) != 0) {
-				errorList.add("username already exist");
-			}
-		} catch (ServiceException e1) {
-			log.error("Error validation username");
-			e1.printStackTrace();
-		}
-		if (errorList.isEmpty() == false) {
+		List<String> errorList = new ArrayList<>();
+		if (request.getParameter("captcha").equals(request.getSession().getAttribute("randomNum")) == false) {
+			CreateImage image = (CreateImage) request.getServletContext().getAttribute("createImage");
+			HttpSession session = request.getSession();
+			int random = (int) (Math.random() * 1000);
+			session.setAttribute("randomNum", random);
+			log.info("captcha number " + random);
+			image.crateImage(Integer.toString(random), session.getId());
+			request.setAttribute("captcha", session.getId().concat(".jpg"));
+			errorList.add("invalid captcha");
 			request.setAttribute("ErrorMsg", errorList);
-			errorList = null;
 			request.getRequestDispatcher("/index.jsp").forward(request, response);
 		} else {
-			try {
-				user = userService.add(user);
-			} catch (ServiceException e) {
-				e.printStackTrace();
+			UserService userService = (UserService) request.getServletContext().getAttribute("userService");
+			user.setFirstName(request.getParameter("fname"));
+			user.setLastName(request.getParameter("lname"));
+			user.setEmail(request.getParameter("email"));
+			user.setLogin(request.getParameter("login"));
+			if (request.getParameter("pass").equals(request.getParameter("cpass"))) {
+				user.setPassword(request.getParameter("pass"));
+			} else {
+				errorList.add("Invalid confirm password");
 			}
-			request.getSession().setAttribute("id", user.getId());
-			request.getRequestDispatcher("/welcome.jsp").forward(request, response);
+			try {
+				if (userService.getUserIdByUsername(request.getParameter("login")) != 0) {
+					errorList.add("username already exist");
+				}
+			} catch (ServiceException e1) {
+				log.error("Error validation username");
+				e1.printStackTrace();
+			}
+			errorList.addAll(validation.checkUser(user));
+			if (errorList.isEmpty() == false) {
+				request.setAttribute("ErrorMsg", errorList);
+				errorList = null;
+				request.getRequestDispatcher("/index.jsp").forward(request, response);
+			} else {
+				try {
+					user = userService.add(user);
+				} catch (ServiceException e) {
+					e.printStackTrace();
+				}
+				request.getSession().setAttribute("id", user.getId());
+				request.getRequestDispatcher("/welcome.jsp").forward(request, response);
+			}
+
 		}
 
 	}
