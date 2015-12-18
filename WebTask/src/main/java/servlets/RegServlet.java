@@ -61,7 +61,7 @@ public class RegServlet extends HttpServlet {
 		User user = new User();
 		Validation validation = (Validation) request.getServletContext().getAttribute("validation");
 		List<String> errorList = new ArrayList<>();
-		if (request.getParameter("captcha").equals(request.getSession().getAttribute("randomNum")) == false) {
+		if (request.getParameter("captcha").equals(request.getSession().getAttribute("randomNum").toString()) == false) {
 			CreateImage image = (CreateImage) request.getServletContext().getAttribute("createImage");
 			HttpSession session = request.getSession();
 			int random = (int) (Math.random() * 1000);
