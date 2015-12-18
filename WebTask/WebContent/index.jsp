@@ -2,6 +2,7 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -52,15 +53,28 @@
 				<input type="text" name="email">
 			</div>
 		</div>
-	
+		<div class="line">
+			<div class="left">
+				<img src="${captcha}" />
+			</div>
+			<div class="right">
+				<input type="text" name="chaptcha">
+			</div>
+
+		</div>
 		<div class="line">
 			<div class="left">
 				<input type="submit" value="Register">
 			</div>
+
 			<div class="right">
 				<input type="reset" value="Reset">
 			</div>
 		</div>
+		<div class="line">
+			<div class="left"></div>
+		</div>
+
 	</div>
 </form>
 </body>
