@@ -2,41 +2,20 @@ package main.java.servlets;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.io.RandomAccessFile;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.tomcat.util.http.fileupload.FileItem;
-import org.apache.tomcat.util.http.fileupload.FileItemFactory;
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
-import org.apache.tomcat.util.http.fileupload.RequestContext;
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItem;
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
-
-import com.octo.captcha.engine.image.utils.SimpleImageCaptchaToJPEG;
-import com.sun.corba.se.spi.orbutil.fsm.Input;
-import com.sun.java.swing.plaf.windows.WindowsTreeUI.CollapsedIcon;
-import com.sun.prism.Image;
-
-import main.java.DAO.impl.UserDAO;
 import main.java.entity.User;
+import main.java.service.CreateImage;
 import main.java.service.UserService;
+import main.java.service.exception.ServiceException;
 import main.java.validator.Validation;
-import sun.rmi.server.Dispatcher;
 
 /**
  * Servlet implementation class RegServlet
@@ -60,9 +39,14 @@ public class RegServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		CreateImage image = (CreateImage) request.getServletContext().getAttribute("createImage");
 		HttpSession session = request.getSession();
 		int random = (int) (Math.random() * 1000);
 		session.setAttribute("randomNum", random);
+		log.info("captcha number " + random);
+		image.crateImage(Integer.toString(random), session.getId());
+		request.setAttribute("captcha", session.getId().concat(".jpg"));
 		request.getRequestDispatcher("/index.jsp").forward(request, response);
 
 	}
@@ -84,17 +68,26 @@ public class RegServlet extends HttpServlet {
 		}
 		Validation validation = (Validation) request.getServletContext().getAttribute("validation");
 		List<String> errorList = validation.checkUser(user);
-		UserDAO userDAO = (UserDAO) request.getServletContext().getAttribute("USER_DAO");
-		if (userDAO.getUserIdByUsername(request.getParameter("login")) != 0) {
-			errorList.add("username already exist");
+		UserService userService = (UserService) request.getServletContext().getAttribute("userService");
+
+		try {
+			if (userService.getUserIdByUsername(request.getParameter("login")) != 0) {
+				errorList.add("username already exist");
+			}
+		} catch (ServiceException e1) {
+			log.error("Error validation username");
+			e1.printStackTrace();
 		}
 		if (errorList.isEmpty() == false) {
 			request.setAttribute("ErrorMsg", errorList);
 			errorList = null;
 			request.getRequestDispatcher("/index.jsp").forward(request, response);
 		} else {
-			UserService userService = (UserService) request.getServletContext().getAttribute("userService");
-			user = userService.add(user);
+			try {
+				user = userService.add(user);
+			} catch (ServiceException e) {
+				e.printStackTrace();
+			}
 			request.getSession().setAttribute("id", user.getId());
 			request.getRequestDispatcher("/welcome.jsp").forward(request, response);
 		}
