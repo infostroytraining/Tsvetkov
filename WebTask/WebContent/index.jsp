@@ -55,10 +55,10 @@
 		</div>
 		<div class="line">
 			<div class="left">
-				<img src="${captcha}" />
+				<img src="CaptchaServlet" id="captcha" />
 			</div>
 			<div class="right">
-				<input type="text" name="chaptcha">
+				<input type="text" name="captcha">
 			</div>
 
 		</div>
@@ -74,8 +74,15 @@
 		<div class="line">
 			<div class="left"></div>
 		</div>
-
-	</div>
 </form>
+
+<div class="line">
+	<form method="get" action="LoginServlet">
+		<div class="left">
+			<input type="submit" value="Login Page">
+		</div>
+	</form>
+</div>
+</div>
 </body>
 </html>

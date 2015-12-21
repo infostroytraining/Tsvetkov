@@ -22,7 +22,7 @@ public class CreateImage {
 	public void crateImage(String text, String fileName) {
 		log.info("Creating image");
 		File imageStart = new File("D:\\GitHub\\Tsvetkov\\WebTask\\image.jpg");
-		File file = new File("D:\\GitHub\\Tsvetkov\\WebTask\\WebContent\\".concat(fileName.concat(".jpg")));
+		File file = new File("D:\\captcha\\".concat(fileName).concat(".jpg"));
 		try {
 			BufferedImage image = ImageIO.read(imageStart);
 			Graphics graphics = image.getGraphics();
@@ -30,7 +30,7 @@ public class CreateImage {
 			graphics.setFont(graphics.getFont().deriveFont(30f));
 			graphics.drawString(text, 20, 40);
 			graphics.dispose();
-			ImageIO.write(image, "jpg", file);
+			ImageIO.write(image, "JPEG", file);
 			log.info(file.getAbsolutePath() + " created image PATH");
 
 		} catch (FileNotFoundException e) {

@@ -29,5 +29,14 @@
     <servlet-name>LoginServlet</servlet-name>
     <url-pattern>/LoginServlet</url-pattern>
   </servlet-mapping>
-  
+  <servlet>
+    <description></description>
+    <display-name>CaptchaServlet</display-name>
+    <servlet-name>CaptchaServlet</servlet-name>
+    <servlet-class>main.java.servlets.CaptchaServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CaptchaServlet</servlet-name>
+    <url-pattern>/CaptchaServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

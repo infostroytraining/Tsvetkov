@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.apache.jasper.runtime.ProtectedFunctionMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import main.java.entity.User;
@@ -60,8 +62,12 @@ public class RegServlet extends HttpServlet {
 			throws ServletException, IOException {
 		User user = new User();
 		Validation validation = (Validation) request.getServletContext().getAttribute("validation");
+		request.removeAttribute("ErrorMsg");;
 		List<String> errorList = new ArrayList<>();
-		if (request.getParameter("captcha").equals(request.getSession().getAttribute("randomNum").toString()) == false) {
+		System.out.println(errorList.size());
+		request.setAttribute("ErrorMsg", errorList);
+		if (request.getParameter("captcha")
+				.equals(request.getSession().getAttribute("randomNum").toString()) == false) {
 			CreateImage image = (CreateImage) request.getServletContext().getAttribute("createImage");
 			HttpSession session = request.getSession();
 			int random = (int) (Math.random() * 1000);
@@ -73,6 +79,7 @@ public class RegServlet extends HttpServlet {
 			request.setAttribute("ErrorMsg", errorList);
 			request.getRequestDispatcher("/index.jsp").forward(request, response);
 		} else {
+			errorList.clear();
 			UserService userService = (UserService) request.getServletContext().getAttribute("userService");
 			user.setFirstName(request.getParameter("fname"));
 			user.setLastName(request.getParameter("lname"));
@@ -92,9 +99,15 @@ public class RegServlet extends HttpServlet {
 				e1.printStackTrace();
 			}
 			errorList.addAll(validation.checkUser(user));
-			if (errorList.isEmpty() == false) {
+			if (!errorList.isEmpty()) {
 				request.setAttribute("ErrorMsg", errorList);
-				errorList = null;
+				CreateImage image = (CreateImage) request.getServletContext().getAttribute("createImage");
+				HttpSession session = request.getSession();
+				int random = (int) (Math.random() * 1000);
+				session.setAttribute("randomNum", random);
+				log.info("captcha number " + random);
+				image.crateImage(Integer.toString(random), session.getId());
+				request.setAttribute("captcha", session.getId().concat(".jpg"));
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
 			} else {
 				try {
@@ -109,5 +122,6 @@ public class RegServlet extends HttpServlet {
 		}
 
 	}
+
 
 }
