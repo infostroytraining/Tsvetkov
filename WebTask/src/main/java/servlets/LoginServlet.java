@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.getRequestDispatcher("login.jsp").forward(request, response);
 	}
@@ -41,7 +41,7 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		List<String> errors = new ArrayList<>();
 		UserService userService = (UserService) request.getServletContext().getAttribute("userService");
@@ -52,8 +52,6 @@ public class LoginServlet extends HttpServlet {
 		try {
 			userId = userService.getUserIdByUsername(username);
 			user = userService.getUserById(userId);
-			System.out.println(user.getLogin());
-			System.out.println(username);
 			if (password != null && user.getPassword() != null && user.getPassword().equals(password)) {
 				request.getRequestDispatcher("welcome.jsp").forward(request, response);
 			} else {
