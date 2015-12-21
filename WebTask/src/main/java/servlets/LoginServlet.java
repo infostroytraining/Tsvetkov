@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import main.java.DAO.impl.UserDAO;
 import main.java.entity.User;
+import main.java.service.UserService;
+import main.java.service.exception.ServiceException;
 
 /**
  * Servlet implementation class LoginServlet
@@ -32,8 +34,7 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		request.getRequestDispatcher("login.jsp").forward(request, response);
 	}
 
 	/**
@@ -43,23 +44,30 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		List<String> errors = new ArrayList<>();
-		UserDAO userDAO = (UserDAO) request.getServletContext().getAttribute("USER_DAO");
+		UserService userService = (UserService) request.getServletContext().getAttribute("userService");
 		String username = request.getParameter("login");
 		String password = request.getParameter("pass");
-		int userId = userDAO.getUserIdByUsername(username);
-		User user = userDAO.get(userId);
+		int userId;
+		User user;
+		try {
+			userId = userService.getUserIdByUsername(username);
+			user = userService.getUserById(userId);
+			System.out.println(user.getLogin());
+			System.out.println(username);
+			if (password != null && user.getPassword() != null && user.getPassword().equals(password)) {
+				request.getRequestDispatcher("welcome.jsp").forward(request, response);
+			} else {
+				errors.add("Invalid username or password");
+				request.setAttribute("ErrorMsg", errors);
+				errors = null;
+				request.getRequestDispatcher("login.jsp").forward(request, response);
 
-		System.out.println(user.getLogin());
-		System.out.println(username);
-		if (password != null && user.getPassword()!=null && user.getPassword().equals(password)) {
-			request.getRequestDispatcher("welcome.jsp").forward(request, response);
-		} else {
-			errors.add("Invalid username or password");
-			request.setAttribute("ErrorMsg", errors);
-			errors = null;
-			request.getRequestDispatcher("login.jsp").forward(request, response);
-
+			}
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+
 	}
 
 }
