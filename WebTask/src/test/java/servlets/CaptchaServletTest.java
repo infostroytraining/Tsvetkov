@@ -38,6 +38,7 @@ public class CaptchaServletTest {
 	private HttpSession session;
 	@Mock
 	private ServletOutputStream outputStream;
+
 	@Before
 	public void init() throws IOException {
 		when(request.getServletContext()).thenReturn(context);
@@ -50,7 +51,6 @@ public class CaptchaServletTest {
 	@Test
 	public void testDoGet() throws ServletException, IOException {
 		System.out.println(request.getSession().getId());
-		
 		servlet.doGet(request, response);
 
 	}
