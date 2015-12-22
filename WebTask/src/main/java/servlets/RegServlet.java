@@ -40,7 +40,7 @@ public class RegServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		CreateImage image = (CreateImage) request.getServletContext().getAttribute("createImage");
@@ -58,16 +58,14 @@ public class RegServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		User user = new User();
 		Validation validation = (Validation) request.getServletContext().getAttribute("validation");
 		request.removeAttribute("ErrorMsg");;
 		List<String> errorList = new ArrayList<>();
-		System.out.println(errorList.size());
 		request.setAttribute("ErrorMsg", errorList);
-		if (request.getParameter("captcha")
-				.equals(request.getSession().getAttribute("randomNum").toString()) == false) {
+		if (request.getParameter("captcha").equals(request.getSession().getAttribute("randomNum").toString()) == false) {
 			CreateImage image = (CreateImage) request.getServletContext().getAttribute("createImage");
 			HttpSession session = request.getSession();
 			int random = (int) (Math.random() * 1000);
