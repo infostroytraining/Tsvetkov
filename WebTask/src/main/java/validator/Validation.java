@@ -11,8 +11,8 @@ import main.java.entity.User;
 
 public class Validation {
 	Logger log = (Logger) LogManager.getLogger();
-	private final String USER_NAME_PATTERN = "^[a-zA-Z0-9]{3,15}$";
-	private final String USER_FIRST_LAST_PATTERN = "^[a-zA-Z]{2,25}$";
+	private static final String USER_NAME_PATTERN = "^[a-zA-Z0-9]{3,15}$";
+	private static final String USER_FIRST_LAST_PATTERN = "^[a-zA-Z]{2,25}$";
 	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	private List<String> errors = new ArrayList<>();
